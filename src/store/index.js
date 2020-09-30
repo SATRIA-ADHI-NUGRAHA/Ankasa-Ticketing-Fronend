@@ -28,7 +28,9 @@ export default new Vuex.Store({
         axios
           .post('http://localhost:3000/api/users/login', result)
           .then(dt => {
-            console.log(dt.data.status === 'not activated' && !dt.data.tokenLogin)
+            console.log(
+              dt.data.status === 'not activated' && !dt.data.tokenLogin
+            )
             if (dt.data.status === 'not activated') {
               swal.fire({
                 icon: 'error',

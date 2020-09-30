@@ -2,6 +2,9 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
 import swal from 'sweetalert2'
+import findtiket from './findtiket/'
+import users from './users/'
+import auth from './auth'
 
 Vue.use(Vuex)
 
@@ -20,8 +23,6 @@ export default new Vuex.Store({
   },
   mutations: {},
   actions: {
-  },
-  modules: {
     login ({ commit }, result) {
       return new Promise((resolve, reject) => {
         axios
@@ -53,5 +54,10 @@ export default new Vuex.Store({
           })
       })
     }
+  },
+  modules: {
+    findtiket,
+    users,
+    auth
   }
 })

@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import axios from 'axios'
-import swal from 'sweetalert2'
 import findtiket from './findtiket/'
 import users from './users/'
+import axios from 'axios'
+import swal from 'sweetalert2'
 import auth from './auth'
 
 Vue.use(Vuex)

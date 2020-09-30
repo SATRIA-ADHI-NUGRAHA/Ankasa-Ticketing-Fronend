@@ -111,8 +111,21 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
 export default {
-
+  computed: {
+    ...mapGetters({
+      allUsers: 'users/getAllusers'
+    })
+  },
+  methods: {
+    ...mapActions({
+      actionsAllUsers: 'users/getAllUsers'
+    })
+  },
+  mounted () {
+    this.actionsAllUsers()
+  }
 }
 </script>
 

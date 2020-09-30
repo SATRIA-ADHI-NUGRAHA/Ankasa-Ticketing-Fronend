@@ -59,7 +59,7 @@
     <div class="row content ">
          <div class="col-md-3 mt-5 font-weight-bold filter" style="margin-left:55px; font-size:24px">Filter</div>
          <div class="col-md-1 mt-5 font-weight-bold text-right reset" style="margin-left:-80px; font-size:14px; color:#2395FF;line-height:30px">Reset</div>
-         <div class="col-md-3 mt-5 select-ticket" style="margin-left:20px;font-family:poppinsBold;font-weight;600;font-size:22px">Select Ticket <span style="font-family:poppinsNormal;font-size:14px found">(6 Light found)</span></div>
+         <div class="col-md-3 mt-5 select-ticket" style="margin-left:20px;font-family:poppinsBold;font-weight;600;font-size:22px">Select Ticket <span style="font-family:poppinsNormal;font-size:14px found">({{allfindtiket.findtiket.data.length}} fLight found)</span></div>
          <div class="col-md-5  mt-5 text-right sort" style="margin-left:-80px; font-weight:bold">Sort by
            <b-icon-arrow-down-up></b-icon-arrow-down-up>
          </div>
@@ -72,10 +72,10 @@
                  <img src="../assets/assets/img/btnback (1).png" alt="">
                </div>
                <div class="col-md-9 mb-2">Direct</div>
+               <input type="checkbox" aria-label="Checkbox for following text input" class="ml-3" @click="direct('direct')">
+               <div class="col-md-9 mb-2" @click="transit('transit')">Transit</div>
                <input type="checkbox" aria-label="Checkbox for following text input" class="ml-3">
-               <div class="col-md-9 mb-2">Transit</div>
-               <input type="checkbox" aria-label="Checkbox for following text input" class="ml-3">
-               <div class="col-md-9 mb-2">Transit 2+</div>
+               <div class="col-md-9 mb-2" @click="transit2('transit')">Transit 2+</div>
                <input type="checkbox" aria-label="Checkbox for following text input" class="ml-3">
              </div>
              <hr style="margin: auto 20px;">
@@ -85,11 +85,11 @@
                  <img src="../assets/assets/img/btnback (1).png" alt="">
                </div>
                <div class="col-md-9 mb-2">Luggage</div>
-               <input type="checkbox" aria-label="Checkbox for following text input" class="ml-3">
+               <input type="checkbox" aria-label="Checkbox for following text input" class="ml-3" @click="luggage('luggage')">
                <div class="col-md-9 mb-2">In-Flight Meal</div>
-               <input type="checkbox" aria-label="Checkbox for following text input" class="ml-3">
-               <div class="col-md-9 mb-2">Transit 2+</div>
-               <input type="checkbox" aria-label="Checkbox for following text input" class="ml-3">
+               <input type="checkbox" aria-label="Checkbox for following text input" class="ml-3" @click="meal('Meal')">
+               <div class="col-md-9 mb-2">Wi-fi</div>
+               <input type="checkbox" aria-label="Checkbox for following text input" class="ml-3" @click="wifi('Wi-fi')">
              </div>
              <hr style="margin: auto 20px;">
               <div class="row ml-1 departure">
@@ -124,6 +124,7 @@
              <hr style="margin: auto 20px;">
              <div class="row tiket-price mt-4 ml-2">
                <div class="col-md-6">
+                 <!-- Tiket -->
                  <h4>Ticket Price</h4>
                </div>
                <div class="col-md-6 text-right" style="margin-left:-55px">
@@ -150,207 +151,45 @@
           </div>
         </div>
         <div class="col-lg mt-4">
-         <div class="box-ticket mb-3" v-for="(datafindtiket, index) in allfindtiket.findtiket.data" :key="index">
-           <div class="row airlines">
-             <div class="col-lg-2">
-               {{datafindtiket.image_airlines}}
-               <img :src="`../assets/assets/img/${datafindtiket.image_airlines}`" alt="">
-             </div>
-             <div class="col-lg-8">{{datafindtiket.name_airlines}}</div>
-           </div>
-             <div class="row airlines-detail ml-2">
-               <div class="col-lg-1  font-weight-bold">{{datafindtiket.id_departure_city}}</div>
-               <p style="font-size:10px" class="text-muted time">12:33</p>
-               <div class="col-lg-1 ml-4"><img src="../assets/assets/img/Vector (3).png" alt=""></div>
-               <div class="col-lg JPN">{{datafindtiket.code_arrived}}</div>
-               <p style="font-size:10px" class="text-muted time2">12:33</p>
-               <div class="col-lg-2 text-time" style="width:40px">3 hours 11 minutes <br> <span style="padding-left:20px">(1 Transit)</span></div>
-               <div class="col-lg text-center">
-                 <img src="../assets/assets/img/bag.png" alt="bag" class="mr-2" width="15px">
-                 <img src="../assets/assets/img/meal.png" alt="meal" class="mr-2" width="15px">
-                 <img src="../assets/assets/img/wifi.png" alt="wifi" class="mr-2" width="15px">
-               </div>
-               <div class="col-lg price text-center">$ 214,00<span>/pax</span></div>
-               <div class="col-lg ">
-                 <div class="select">
-                   <h5>Select</h5>
-                 </div>
-               </div>
-             </div>
-               <div class="row">
-                 <a href="" class="view-detail">View Detail</a>
-                 <img src="../assets/assets/img/btnback (2).png" style="margin-left:10px;margin-top:5px" width="15px;" height="12px">
-               </div>
-         </div>
-         <div class="box-ticket mb-3">
-           <div class="row airlines">
-             <div class="col-lg-2">
-               <img src="../assets/assets/img/AIR ASIA 1 1 (1).png" alt="">
-             </div>
-             <div class="col-lg-8">Airasia</div>
-           </div>
-             <div class="row airlines-detail ml-2">
-               <div class="col-lg-1  font-weight-bold">IDN</div>
-               <p style="font-size:10px" class="text-muted time">12:33</p>
-               <div class="col-lg-1 ml-4"><img src="../assets/assets/img/Vector (3).png" alt=""></div>
-               <div class="col-lg">JPN</div>
-                <p style="font-size:10px" class="text-muted time2">12:33</p>
-               <div class="col-lg-2 text-time" style="width:40px">3 hours 11 minutes <br> <span style="padding-left:20px">(1 Transit)</span></div>
-               <div class="col-lg text-center">
-                 <img src="../assets/assets/img/bag.png" alt="bag" class="mr-2" width="15px">
-                 <img src="../assets/assets/img/meal.png" alt="meal" class="mr-2" width="15px">
-                 <img src="../assets/assets/img/wifi.png" alt="wifi" class="mr-2" width="15px">
-               </div>
-               <div class="col-lg price text-center">$ 214,00<span>/pax</span></div>
-               <div class="col-lg ">
-                 <div class="select">
-                   <h5>Select</h5>
-                 </div>
-               </div>
-             </div>
-               <div class="row">
-                 <a href="" class="view-detail">View Detail</a>
-                 <img src="../assets/assets/img/btnback (2).png" style="margin-left:10px;margin-top:5px" width="15px;" height="12px">
-               </div>
-         </div>
-         <div class="box-ticket mb-3">
-           <div class="row airlines">
-             <div class="col-lg-2">
-               <img src="../assets/assets/img/Lion_Air_logo_logotype 1.png" alt="">
-             </div>
-             <div class="col-lg-8">LionAir</div>
-           </div>
-             <div class="row airlines-detail ml-2">
-               <div class="col-lg-1  font-weight-bold">IDN</div>
-               <p style="font-size:10px" class="text-muted time">12:33</p>
-               <div class="col-lg-1 ml-4"><img src="../assets/assets/img/Vector (3).png" alt=""></div>
-               <div class="col-lg">JPN</div>
-                <p style="font-size:10px" class="text-muted time2">12:33</p>
-               <div class="col-lg-2 text-time" style="width:40px">3 hours 11 minutes <br> <span style="padding-left:20px">(1 Transit)</span></div>
-               <div class="col-lg text-center">
-                 <img src="../assets/assets/img/bag.png" alt="bag" class="mr-2" width="15px">
-                 <img src="../assets/assets/img/meal.png" alt="meal" class="mr-2" width="15px">
-                 <img src="../assets/assets/img/wifi.png" alt="wifi" class="mr-2" width="15px">
-               </div>
-               <div class="col-lg price text-center">$ 214,00<span>/pax</span></div>
-               <div class="col-lg ">
-                 <div class="select">
-                   <h5>Select</h5>
-                 </div>
-               </div>
-             </div>
-               <div class="row">
-                 <a href="" class="view-detail">View Detail</a>
-                 <img src="../assets/assets/img/btnback (2).png" style="margin-left:10px;margin-top:5px" width="15px;" height="12px">
-               </div>
-         </div>
-         <div class="box-ticket mb-5">
-           <div class="row airlines">
-             <div class="col-lg-2">
-               <img src="../assets/assets/img/garuda.png" alt="">
-             </div>
-             <div class="col-lg-8">Garuda Indonesia</div>
-           </div>
-             <div class="row airlines-detail ml-2">
-               <div class="col-lg-1  font-weight-bold">IDN</div>
-               <p style="font-size:10px" class="text-muted time">12:33</p>
-               <div class="col-lg-1 ml-4"><img src="../assets/assets/img/Vector (3).png" alt=""></div>
-               <div class="col-lg">JPN</div>
-                <p style="font-size:10px" class="text-muted time2">12:33</p>
-               <div class="col-lg-2 text-time" style="width:40px">3 hours 11 minutes <br> <span style="padding-left:20px">(1 Transit)</span></div>
-               <div class="col-lg text-center">
-                 <img src="../assets/assets/img/bag.png" alt="bag" class="mr-2" width="15px">
-                 <img src="../assets/assets/img/meal.png" alt="meal" class="mr-2" width="15px">
-                 <img src="../assets/assets/img/wifi.png" alt="wifi" class="mr-2" width="15px">
-               </div>
-               <div class="col-lg price text-center">$ 214,00<span>/pax</span></div>
-               <div class="col-lg ">
-                 <div class="select">
-                   <h5>Select</h5>
-                 </div>
-               </div>
-             </div>
-               <div class="row">
-                 <a href="" class="view-detail">View Detail</a>
-                 <img src="../assets/assets/img/btnback (2).png" style="margin-left:10px;margin-top:5px" width="15px;" height="12px">
-               </div>
-         </div>
-        </div>
-          <div class="box-ticket2">
-             <div class="card1 mt-5">
-                <div class="found-mobile ">6 flight found</div>
-                <div class="filter-mobile ">FIlter
-                  <b-icon-arrow-down-up></b-icon-arrow-down-up>
-                </div>
-              </div>
-              <div class="card2">
-                  <div class="row card-airlines">
-                        <div class="col-4">
-                          <img src="../assets/assets/img/garuda.png" class="ml-3 mt-4">
+              <div class="box-ticket mb-3" v-for="(datafindtiket, index) in allfindtiket.findtiket.data" :key="index">
+                    <div class="row airlines">
+                      <div class="col-lg-2">
+                        <img :src="`http://localhost:3000/img/${datafindtiket.image_airlines}`" alt="">
+                      </div>
+                      <div class="col-lg-8">{{datafindtiket.name_airlines}}</div>
+                    </div>
+                      <div class="row airlines-detail ml-2">
+                        <div class="col-lg-1  font-weight-bold">{{datafindtiket.code_departure}}</div>
+                        <p style="font-size:10px" class="text-muted time">12:33</p>
+                        <div class="col-lg-1 ml-4"><img src="../assets/assets/img/Vector (3).png" alt=""></div>
+                        <div class="col-lg JPN">{{datafindtiket.code_destination}}</div>
+                        <p style="font-size:10px" class="text-muted time2">12:33</p>
+                        <div class="col-lg-2 text-time" style="width:40px">3 hours 11 minutes <br> <span style="padding-left:20px">1 {{datafindtiket.name_transit}}</span></div>
+                        <div class="col-lg text-center d-d-inline">
+                          <span v-if="datafindtiket.name_facilities==='Luggage'">
+                          <img src="../assets/assets/img/bag.png" alt="bag" class="mr-2" width="15px">
+                          </span>
+                            <span :else-if="datafindtiket.name_facilities==='Wi-fi'">
+                          <img src="../assets/assets/img/wifi.png" alt="meal" class="mr-2" width="15px">
+                          </span>
+                            <span :else-if="datafindtiket.name_facilities==='In-Flight Meal'">
+                          <img src="../assets/assets/img/meal.png" alt="meal" class="mr-2" width="15px">
+                          </span>
                         </div>
-                      <div class="col-8">
-                        <div class="row country-mobile">
-                          <img src="../assets/assets/img/Vector (3).png" class="vektor">
-                          <div class="col-8">IDN</div>
-                          <div class="col-4">JPN</div>
-                        </div>
-                        <div class="row time-mobile">
-                          <div class="col-8">12:33</div>
-                          <div class="col-4">18:33</div>
-                        </div>
-                        <div class="row mt-3 long-time">
-                          <div class="col-8">3 hours 11 minutes</div>
-                          <div class="col-4">$ 214,00</div>
+                        <div class="col-lg price text-center">$ {{datafindtiket.price}}<span>/pax</span></div>
+                        <div class="col-lg ">
+                          <div class="select">
+                            <router-link :to="`/flightdetail/${datafindtiket.id_airlines}`" class="selects" style="box-shadow: 0px 8px 10px rgba(35, 149, 255, 0.3);height:40px;width:100px">Select</router-link>
+                          </div>
                         </div>
                       </div>
-               </div>
-              </div>
-                <div class="card2">
-                  <div class="row card-airlines">
-                        <div class="col-4">
-                          <img src="../assets/assets/img/Lion_Air_logo_logotype 1.png" class="ml-3 mt-4">
+                        <div class="row">
+                          <a href="" class="view-detail">View Detail</a>
+                          <img src="../assets/assets/img/btnback (2).png" style="margin-left:10px;margin-top:5px" width="15px;" height="12px">
                         </div>
-                      <div class="col-8">
-                        <div class="row country-mobile">
-                          <img src="../assets/assets/img/Vector (3).png" class="vektor">
-                          <div class="col-8">IDN</div>
-                          <div class="col-4">JPN</div>
-                        </div>
-                        <div class="row time-mobile">
-                          <div class="col-8">12:33</div>
-                          <div class="col-4">18:33</div>
-                        </div>
-                        <div class="row mt-3 long-time">
-                          <div class="col-8">3 hours 11 minutes</div>
-                          <div class="col-4">$ 214,00</div>
-                        </div>
-                      </div>
-               </div>
-              </div>
-                <div class="card2">
-                  <div class="row card-airlines">
-                        <div class="col-4">
-                          <img src="../assets/assets/img/AIR ASIA 1 1 (1).png" class="ml-3 mt-4">
-                        </div>
-                      <div class="col-8">
-                        <div class="row country-mobile">
-                          <img src="../assets/assets/img/Vector (3).png" class="vektor">
-                          <div class="col-8">IDN</div>
-                          <div class="col-4">JPN</div>
-                        </div>
-                        <div class="row time-mobile">
-                          <div class="col-8">12:33</div>
-                          <div class="col-4">18:33</div>
-                        </div>
-                        <div class="row mt-3 long-time">
-                          <div class="col-8">3 hours 11 minutes</div>
-                          <div class="col-4">$ 214,00</div>
-                        </div>
-                      </div>
-               </div>
-              </div>
-             </div>
-          </div>
+                    </div>
+                    </div>
+                  </div>
     <Footer/>
   </div>
 </template>
@@ -372,8 +211,32 @@ export default {
   },
   methods: {
     ...mapActions({
-      actionsFindTiket: 'findtiket/getAllTicket'
-    })
+      actionsFindTiket: 'findtiket/getAllTicket',
+      actionsGetDetailTiket: 'findtiket/getDetailTicket',
+      actionsFilterTiketTransit: 'findtiket/filterTiketTransit',
+      actionsFilterTiketFacilities: 'findtiket/filterTiketFacilities'
+    }),
+    direct (value) {
+      this.actionsFilterTiketTransit(value)
+    },
+    transit (value) {
+      this.actionsFilterTiketTransit(value)
+    },
+    transit2 (value) {
+      this.actionsFilterTiketTransit(value)
+    },
+    luggage (value) {
+      this.actionsFilterTiketFacilities(value)
+    },
+    meal (value) {
+      this.actionsFilterTiketFacilities(value)
+    },
+    wifi (value) {
+      this.actionsFilterTiketFacilities(value)
+    }
+    // selectTiket (idAirlines) {
+    //   this.actionsGetDetailTiket(idAirlines)
+    // }
   },
   mounted () {
     this.actionsFindTiket()
@@ -498,7 +361,7 @@ export default {
 .airlines img {
   margin-left: 20px;
 }
-.select {
+.select .selects {
   background: #2395FF;
 box-shadow: 0px 8px 10px rgba(35, 149, 255, 0.3);
 border-radius: 10px;
@@ -507,7 +370,7 @@ color: white;
 height: 40px;
 cursor: pointer;
 }
-.select h5{
+.select .selects{
   line-height: 40px;
   text-align: center;
   font-size: 14px;

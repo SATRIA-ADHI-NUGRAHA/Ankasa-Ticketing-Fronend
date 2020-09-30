@@ -32,15 +32,19 @@
           <p></p>
           <div class="md-form input-with-post-icon">
             <i class="fas fa-eye input-prefix"></i>
-            <input type="password" id="suffixInside" class="form-control">
-            <ValidationProvider
+            <!-- <input type="password" id="suffixInside" class="form-control"> -->
+            <!-- <ValidationProvider
               name="Password"
               rules="required"
               v-slot="{ errors }"
+              > -->
+            <input v-model="form.password" type="password" id="suffixInside" class="form-control">
+            <ValidationProvider
+              rules="required"
+              v-slot="{ errors }"
               >
-            <input v-model="form.password" type="text" id="suffixInside" class="form-control">
             <label for="suffixInside">Password </label>
-              <div class="text-danger">
+            <div class="text-danger">
               {{errors[0]}}
             </div>
             </ValidationProvider>

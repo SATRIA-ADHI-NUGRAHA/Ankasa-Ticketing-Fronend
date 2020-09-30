@@ -10,6 +10,8 @@
           />
           <div class="row">
             <div class="col-lg-6">
+    <h3>ROUTE</h3>{{$route.params.id_airlines}}
+    {{getFlightDetail.findtiket.data}}
               <h4 class="contact">Contact Person Details</h4>
             </div>
             <div class="col-lg-3">
@@ -48,17 +50,17 @@
                   </div>
             </div>
             <div class="col-lg-6">
-                <div class="card2">
+                <div class="card2" v-for="(getFlight,index) in getFlightDetail.findtiket.data" :key="index">
                   <div class="row">
                     <div class="col-md-6 logo-airlines">
-                      <img src="../assets/assets/img/garuda.png" width="120px">
+                      <img  :src="`http://localhost:3000/img/${getFlight.image_airlines}`" width="120px">
                     </div>
-                    <div class="col-md-6 mt-3">Garuda Indonesia</div>
+                    <div class="col-md-6 mt-3">{{getFlight.name_airlines}}</div>
                   </div>
                   <div class="row text-city mt-5">
                     <img src="../assets/assets/img/Vector (3).png" >
-                    <div class="col-md-6">Medan (IDN)</div>
-                    <div class="col-md-6">Tokyo (JPN)</div>
+                    <div class="col-md-6">{{getFlight.name_departure_city}} ({{getFlight.code_departure}})</div>
+                    <div class="col-md-6">{{getFlight.city_arrived}} ({{getFlight.code_destination}})</div>
                   </div>
                   <div class="row mt-2">
                     <div class="col-md-12">
@@ -244,10 +246,29 @@
 <script>
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import { mapGetters, mapActions } from 'vuex'
 export default {
   components: {
     Navbar,
     Footer
+  },
+  data () {
+    return {
+      id_airlines: null
+    }
+  },
+  computed: {
+    ...mapGetters({
+      getFlightDetail: 'findtiket/getFlightDetail'
+    })
+  },
+  methods: {
+    ...mapActions({
+      actionsFlightDetail: 'findtiket/getFlightDetail'
+    })
+  },
+  mounted () {
+    this.actionsFlightDetail(this.$route.params.id_airlines)
   }
 }
 </script>

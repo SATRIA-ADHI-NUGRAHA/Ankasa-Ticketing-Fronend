@@ -3,7 +3,6 @@ import VueRouter from 'vue-router'
 import store from '../store/index'
 // import Home from '../views/Home.vue  '
 import findTiket from '../views/Find_Tiket.vue'
-
 import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 import ForgotPassword from '../views/ForgotPassword.vue'
@@ -26,7 +25,7 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
-    path: '/flightdetail',
+    path: '/flightdetail/:id_airlines',
     name: 'flightDetail',
     component: flightDetail,
     meta: { requiresAuth: true }

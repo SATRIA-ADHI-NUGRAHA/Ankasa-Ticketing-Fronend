@@ -35,7 +35,7 @@
           <div class="col-md-3 ">
             <h5 class="mb-3">Follow Us</h5>
             <div class="social-media">
-              <img src="../assets/assets/img/fb.png" alt="fb" class="mr-3" />
+              <img src="../assets/assets/img/fb2.png" alt="fb" class="mr-3" />
               <img src="../assets/assets/img/twt.png" alt="tw" class="mr-3" />
               <span class="icon-ig">
                 <img src="../assets/assets/img/Vector (2).png" class="mr-3" />

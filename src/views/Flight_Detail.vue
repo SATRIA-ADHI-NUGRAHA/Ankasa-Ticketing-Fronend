@@ -1,6 +1,6 @@
 <template>
   <div style="overflow-y:hidden">
-    <Navbar />
+    <Navbar :img="getDetailUsers.users.data"/>
     <div class="row">
       <div class="box">
         <div class="col-lg-12 ml-5 items">
@@ -10,8 +10,6 @@
           />
           <div class="row">
             <div class="col-lg-6">
-    <h3>ROUTE</h3>{{$route.params.id_airlines}}
-    {{getFlightDetail.findtiket.data}}
               <h4 class="contact">Contact Person Details</h4>
             </div>
             <div class="col-lg-3">
@@ -19,28 +17,28 @@
             </div>
             <div class="col-lg-2">
               <h5 style="font-size: 14px; margin-top: -15px; color: white">
-                View Details
+                View Detailss
               </h5>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="content" style="background-color:#F5F6FA; height:200vh">
+    <div class="content" style="background-color:#F5F6FA; height:200vh" v-for="(getUser , index) in getDetailUsers.users.data " :key="index">
           <div class="row">
             <div class="col-lg-6">
                   <div class="card1">
                     <!-- Material input -->
                     <div class="md-form">
-                      <input type="text" id="fullname" class="form-control">
+                      <input type="text" id="fullname" class="form-control" v-model="getUser.name" readonly>
                       <label for="fullname">Full Name</label>
                     </div>
                     <div class="md-form">
-                      <input type="email" id="email" class="form-control">
+                      <input type="email" id="email" class="form-control" v-model="getUser.email" readonly>
                       <label for="email">Email </label>
                     </div>
                     <div class="md-form">
-                      <input type="number" id="phone_number" class="form-control">
+                      <input type="number" id="phone_number" class="form-control" v-model="getUser.phone_number">
                       <label for="phone_number">Phone Number</label>
                     </div>
                     <div class="alert alert-danger" role="alert">
@@ -53,7 +51,7 @@
                 <div class="card2" v-for="(getFlight,index) in getFlightDetail.findtiket.data" :key="index">
                   <div class="row">
                     <div class="col-md-6 logo-airlines">
-                      <img  :src="`http://localhost:3000/img/${getFlight.image_airlines}`" width="120px">
+                      <img  :src="`${url}/img/${getFlight.image_airlines}`" width="120px">
                     </div>
                     <div class="col-md-6 mt-3">{{getFlight.name_airlines}}</div>
                   </div>
@@ -64,7 +62,7 @@
                   </div>
                   <div class="row mt-2">
                     <div class="col-md-12">
-                      <p>Sunday, 15 August 2020 | 12:33 - 15:21</p>
+                      <p>Sunday, 15 August 2020 | 12:33 - 15:2</p>
                     </div>
                   </div>
                   <div class="row mt-2 checked">
@@ -82,8 +80,13 @@
                     <div class="col-md-6">
                       <h5>Total Payement</h5>
                     </div>
-                    <div class="col-md-6">
-                      <h4>$ 135,00
+                    <div class="col-md-6" v-if="asurance===true">
+                      <h4>$ {{getFlight.price + 2.00}}
+                        <img src="../assets/assets/img/btnback (2).png" alt="">
+                      </h4>
+                    </div>
+                    <div v-else>
+                      <h4>$ {{getFlight.price}}
                         <img src="../assets/assets/img/btnback (2).png" alt="">
                       </h4>
                     </div>
@@ -106,20 +109,20 @@
                         </div>
                       </div>
                       <div class="row">
-                        <div class="col-lg-12">
+                        <div class="col-lg-12" v-for="(getUser , index) in getDetailUsers.users.data " :key="index">
                             <!-- Material input -->
                             <div class="md-form">
-                              <input placeholder="Mr" type="text" id="title" class="form-control">
+                              <input placeholder="Mr" type="text" id="title" class="form-control" v-model="Mr" value="Mr" readonly>
                               <label for="title" class="font-weight-bold">Title</label>
                             </div>
                              <!-- Material input -->
                             <div class="md-form">
-                              <input placeholder="full_name" type="text" id="fullname" class="form-control">
+                              <input placeholder="full_name" type="text" id="fullname" class="form-control" v-model="getUser.name" readonly>
                               <label for="fullname" class="font-weight-bold">Full Name</label>
                             </div>
                              <!-- Material input -->
                             <div class="md-form">
-                              <input placeholder="nationality" type="text" id="nationality" class="form-control">
+                              <input placeholder="nationality" type="text" id="nationality" class="form-control" v-model="address" readonly>
                               <label for="nationality" class="font-weight-bold">Nationality</label>
                             </div>
                         </div>
@@ -139,7 +142,7 @@
                       <div class="col-lg-12 insurance">
                        <div class="row">
                          <div class="col-lg-6">
-                            <input type="checkbox" aria-label="Checkbox for following text input">
+                            <input type="checkbox" aria-label="Checkbox for following text input" v-model="asurance">
                           Travel Insurance
                        </div>
                        <div class="col-lg-6 text-right" style="color: rgb(158, 155, 155);">
@@ -151,7 +154,7 @@
                          <p>Get travel compensation up to $ 10.000,00</p>
                        </div>
                        <div class="buton">
-                         <span>Proceed to Payment</span>
+                         <span @click="process" style="cursor:pointer">Proceed to Payment</span>
                        </div>
                     </div>
                   </div>
@@ -160,7 +163,7 @@
            </div>
           </div>
       </div>
-      <div class="ticket-card">
+      <div class="ticket-card" v-for="(getFlight,index) in getFlightDetail.findtiket.data" :key="index">
        <div class="row">
          <div class="col-12">
             <img src="../assets/assets/img/ticketBackground.png" height="550px" >
@@ -168,14 +171,14 @@
        </div>
        <div class="row text-tiket">
          <img src="../assets/assets/img/Vector (3).png" >
-         <div class="from ml-5">IDN</div>
-         <div class="to mr-5">JPN</div>
+         <div class="from ml-5">{{getFlight.code_departure}}</div>
+         <div class="to mr-5">{{getFlight.code_destination}}</div>
          <div class="time1">12:33</div>
          <div class="time2">18:33</div>
        </div>
        <div class="row logo-airliness">
          <div class="col-6">
-           <img src="../assets/assets/img/garuda.png" alt="">
+           <img :src="`${url}/img/${getFlight.image_airlines}`" alt="">
          </div>
          <div class="col-6">
            <b-icon icon="star-fill" variant="warning" class="ml-1"></b-icon>
@@ -193,49 +196,53 @@
            <div class="col-3">Gate</div>
          </div>
            <div class="row code " style="width:400px; font-weight:bold;border-bottom:0.1px solid grey">
-            <div class="col-3">AB-221</div>
-            <div class="col-3">Economy</div>
-            <div class="col-3 text-center">A</div>
-            <div class="col-3">221</div>
+            <div class="col-3">{{getFlight.code_airlines}}</div>
+            <div class="col-3">{{getFlight.name_class}}</div>
+            <div class="col-3 text-center">{{terminal}}</div>
+            <div class="col-3">{{gate}}</div>
          </div>
          <br>
          <br>
        </div>
          <div class="row passengers">
-           <span class="badge ml-3" style="line-height:24px;border-radius:100%; width:30px;height:30px"><span style="color:#2395FF">0</span></span>
+           <span class="badge ml-3" style="line-height:24px;border-radius:100%; width:30px;height:30px"><span style="color:#2395FF">{{getFlight.child}}</span></span>
            <div class="col-6 circle">Child</div>
-           <span class="badge ml-3" style="line-height:24px;border-radius:100%; width:30px;height:30px"><span style="color:#2395FF">0</span></span>
+           <span class="badge ml-3" style="line-height:24px;border-radius:100%; width:30px;height:30px"><span style="color:#2395FF">{{getFlight.adult}}</span></span>
            <div class="col circle">Adults</div>
          </div>
          <div class="row">
            <div class="col-12 ml-4 font-weight-bold">Facilities</div>
          </div>
            <div class="row ml-4 mt-5">
-             <div class="col-6">
-               <div class="snack">
-                 <img src="../assets/assets/img/Vector (5).png" >
-                 <span style="color:white;font-family:poppinsBold; line-height:50px" class="ml-5">Snack</span>
-               </div>
-             </div>
-             <div class="col-6 ">
+              <div class="col-6" v-if="getFlight.name_facilities === 'Luggage'">
+                <div class="snack">
+                  <img src="../assets/assets/img/Vector (5).png" >
+                  <span style="color:white;font-family:poppinsBold; line-height:50px" class="ml-5">{{getFlight.name_facilities }}</span>
+                </div>
+              </div>
+           </div>
+           <div class="row ml-4 mt-5">
+             <div class="col-6 " v-if="getFlight.name_facilities === 'Wi-fi'">
                <div class="wifi">
                  <img src="../assets/assets/img/Vector (6).png" >
-                  <span style="color:white;font-family:poppinsBold; line-height:50px" class="ml-5">Wifi</span>
+                  <span style="color:white;font-family:poppinsBold; line-height:50px" class="ml-5">{{getFlight.name_facilities }}</span>
                </div>
              </div>
-             <div class="col-7 mt-3">
+           </div>
+           <div class="row ml-4 mt-5">
+             <div class="col-7 mt-3" v-if="getFlight.name_facilities === 'In-Flight Meal'">
                <div class="pass">
                  <img src="../assets/assets/img/Vector (7).png" >
-                  <span style="color:white;font-family:poppinsBold; line-height:50px" class="ml-5">Passanger</span>
+                  <span style="color:white;font-family:poppinsBold; line-height:50px" class="ml-5">{{getFlight.name_facilities }}</span>
                </div>
              </div>
            </div>
              <div class="row amount ml-5">
                <div class="col-8">Total you'll pay</div>
-               <div class="col-4" style="font-family:poppinsBold;font-weight:600; color:#2395FF">$ 145,00</div>
+               <div class="col-4" style="font-family:poppinsBold;font-weight:600; color:#2395FF">{{getFlight.price}}</div>
              </div>
               <div class="row booking">
-               <span>Booking</span>
+               <span @click="process">Booking</span>
              </div>
       </div>
     </div>
@@ -246,7 +253,8 @@
 <script>
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions, mapState } from 'vuex'
+import Swal from 'sweetalert2'
 export default {
   components: {
     Navbar,
@@ -254,21 +262,76 @@ export default {
   },
   data () {
     return {
-      id_airlines: null
+      url: process.env.VUE_APP_API_URL,
+      id_airlines: null,
+      address: null,
+      amount: null,
+      asurance: null,
+      gate: null,
+      terminal: null
     }
   },
   computed: {
+    ...mapState({
+      id: 'id'
+    }),
     ...mapGetters({
-      getFlightDetail: 'findtiket/getFlightDetail'
+      getFlightDetail: 'findtiket/getFlightDetail',
+      getDetailUsers: 'users/getDetailUsers'
     })
   },
   methods: {
     ...mapActions({
-      actionsFlightDetail: 'findtiket/getFlightDetail'
-    })
+      actionsFlightDetail: 'findtiket/getFlightDetail',
+      getId: 'users/getDetailUsers',
+      insertBooking: 'booking/insertBooking'
+    }),
+    process () {
+      const dataAirlines = this.getFlightDetail.findtiket.data[0]
+      const id = this.id
+      const idAirlines = dataAirlines.id_airlines
+      const codeAirlines = dataAirlines.code_airlines
+      const codeDeparture = dataAirlines.code_departure
+      const codeDestination = dataAirlines.code_destination
+      this.amount = dataAirlines.price
+      if (this.asurance === true) {
+        this.amount += 2
+      } else {
+        this.amount = dataAirlines.price
+      }
+      const data = {
+        id_user: id,
+        id_airlines: idAirlines,
+        code_airlines: codeAirlines,
+        code_departure: codeDeparture,
+        code_destination: codeDestination,
+        total_payment: this.amount
+      }
+      this.insertBooking(data)
+        .then(res => {
+          alert(res)
+          setTimeout(() => {
+            window.location = '/mybooking'
+          }, 2000)
+          Swal.fire(
+            'Good job!',
+        `${res}`,
+        'success'
+          )
+        })
+    }
   },
   mounted () {
     this.actionsFlightDetail(this.$route.params.id_airlines)
+    this.getId(this.id)
+    const dataUsers = this.getDetailUsers.users.data[0]
+    const addres = dataUsers.address
+    const pecah = addres.split(',')
+    this.address = pecah[1]
+    const gate = this.getFlightDetail.findtiket.data[0].code_airlines
+    const splits = gate.split('-')
+    this.gate = splits[1]
+    this.terminal = splits[0]
   }
 }
 </script>

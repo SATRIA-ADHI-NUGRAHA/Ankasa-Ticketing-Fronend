@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Navbar />
+    <Navbar :img="getDetailUsers.users.data" />
     <div class="row">
       <div class="box d-flex">
         <div class="col-md-6 ml-5">
@@ -14,38 +14,38 @@
             </div>
             <div class="col-md-4 col-sm-3 col-3 FROM">
               <p class="from">From</p>
-              <h4 class="city ml-3">Medan(IDN)</h4>
+              <h4 class="city ml-3">{{findTiket[0].name_departure_city}}({{findTiket[0].code_departure}})</h4>
             </div>
             <div class="col-md-1 text-white col-sm-3 col-3">
               <b-icon-arrow-left-right></b-icon-arrow-left-right>
             </div>
             <div class="col-md-3 ml-3 col-sm-3 col-3 TO">
               <p class="to">To</p>
-              <h4 class="city">Tokyo(JPN)</h4>
+              <h4 class="city">{{findTiket[0].city_arrived}}({{findTiket[0].code_destination}})</h4>
               <h4 class="change-search">Change Search</h4>
             </div>
           </div>
           <div class="row  ">
             <div class="schedule">
-              <div class="day">Monday, 20 July 20</div>
+              <div class="day">{{findTiket[0].departure_day}}</div>
               <div class="passenger">
                 <img src="../assets/assets/img/box.png" alt="" />
-                6 Passanger
+                {{parseInt(findTiket[0].child) + parseInt(findTiket[0].adult)}} Passanger
               </div>
               <div class="class">
                 <img src="../assets/assets/img/box.png" alt="" />
-                Economy
+                {{findTiket[0].name_class}}
               </div>
             </div>
           </div>
           <div class="row">
             <div class="list">
-              <div class="list-day ">Monday, 20 July 20 <span class="line">|</span> </div>
+              <div class="list-day ">{{findTiket[0].departure_day}}<span class="line">|</span> </div>
               <div class="passanger">
-                6 Passanger <span class="line">|</span>
+               {{parseInt(findTiket[0].child) + parseInt(findTiket[0].adult)}} Passanger <span class="line">|</span>
               </div>
               <div class="clas-list">
-                 Economy
+                 {{findTiket[0].name_class}}
               </div>
             </div>
                <div class="box-search mt-4">
@@ -56,7 +56,7 @@
         </div>
       </div>
     </div>
-    <div class="row content ">
+    <div class="row content" >
          <div class="col-md-3 mt-5 font-weight-bold filter" style="margin-left:55px; font-size:24px">Filter</div>
          <div class="col-md-1 mt-5 font-weight-bold text-right reset" style="margin-left:-80px; font-size:14px; color:#2395FF;line-height:30px">Reset</div>
          <div class="col-md-3 mt-5 select-ticket" style="margin-left:20px;font-family:poppinsBold;font-weight;600;font-size:22px">Select Ticket <span style="font-family:poppinsNormal;font-size:14px found">({{allfindtiket.findtiket.data.length}} fLight found)</span></div>
@@ -72,11 +72,11 @@
                  <img src="../assets/assets/img/btnback (1).png" alt="">
                </div>
                <div class="col-md-9 mb-2">Direct</div>
-               <input type="checkbox" aria-label="Checkbox for following text input" class="ml-3" @click="direct('direct')">
-               <div class="col-md-9 mb-2" @click="transit('transit')">Transit</div>
-               <input type="checkbox" aria-label="Checkbox for following text input" class="ml-3">
-               <div class="col-md-9 mb-2" @click="transit2('transit')">Transit 2+</div>
-               <input type="checkbox" aria-label="Checkbox for following text input" class="ml-3">
+               <input type="checkbox" aria-label="Checkbox for following text input" class="ml-3" v-model="checked"  @click="direct()">
+               <div class="col-md-9 mb-2">Transit</div>
+               <input type="checkbox" aria-label="Checkbox for following text input" class="ml-3" v-model="checked1"  @click="transitMethod()">
+               <div class="col-md-9 mb-2">Transit 2+</div>
+               <input type="checkbox" aria-label="Checkbox for following text input" class="ml-3" v-model="checked2" @click="transit2()">
              </div>
              <hr style="margin: auto 20px;">
               <div class="row ml-1 facilities">
@@ -85,11 +85,11 @@
                  <img src="../assets/assets/img/btnback (1).png" alt="">
                </div>
                <div class="col-md-9 mb-2">Luggage</div>
-               <input type="checkbox" aria-label="Checkbox for following text input" class="ml-3" @click="luggage('luggage')">
+               <input type="checkbox" aria-label="Checkbox for following text input" class="ml-3" v-model="facilities1"  @click="luggage()">
                <div class="col-md-9 mb-2">In-Flight Meal</div>
-               <input type="checkbox" aria-label="Checkbox for following text input" class="ml-3" @click="meal('Meal')">
+               <input type="checkbox" aria-label="Checkbox for following text input" class="ml-3" v-model="facilities2"  @click="meal()">
                <div class="col-md-9 mb-2">Wi-fi</div>
-               <input type="checkbox" aria-label="Checkbox for following text input" class="ml-3" @click="wifi('Wi-fi')">
+               <input type="checkbox" aria-label="Checkbox for following text input" class="ml-3" v-model="facilities3"  @click="wifi()">
              </div>
              <hr style="margin: auto 20px;">
               <div class="row ml-1 departure">
@@ -98,13 +98,13 @@
                  <img src="../assets/assets/img/btnback (1).png" alt="">
                </div>
                <div class="col-md-9 mb-2">00:00 - 06:00</div>
-               <input type="checkbox" aria-label="Checkbox for following text input" class="ml-3">
-               <div class="col-md-9 mb-2">00:60 - 12:00</div>
-               <input type="checkbox" aria-label="Checkbox for following text input" class="ml-3">
+               <input type="checkbox" aria-label="Checkbox for following text input" class="ml-3" v-model="timeDepar1" @click="depar1()">
+               <div class="col-md-9 mb-2">06:00 - 12:00</div>
+               <input type="checkbox" aria-label="Checkbox for following text input" class="ml-3" v-model="timeDepar2" @click="depar2()">
                <div class="col-md-9 mb-2">12:00 - 18:00</div>
-               <input type="checkbox" aria-label="Checkbox for following text input" class="ml-3">
+               <input type="checkbox" aria-label="Checkbox for following text input" class="ml-3" v-model="timeDepar3" @click="depar3()">
                <div class="col-md-9 mb-2">18:00 - 24:00</div>
-               <input type="checkbox" aria-label="Checkbox for following text input" class="ml-3">
+               <input type="checkbox" aria-label="Checkbox for following text input" class="ml-3" v-model="timeDepar4" @click="depar4()">
              </div>
              <hr style="margin: auto 20px;">
               <div class="row ml-1 time_arrived">
@@ -113,13 +113,13 @@
                  <img src="../assets/assets/img/btnback (1).png" alt="">
                </div>
                <div class="col-md-9 mb-2">00:00 - 06:00</div>
-               <input type="checkbox" aria-label="Checkbox for following text input" class="ml-3">
-               <div class="col-md-9 mb-2">00:60 - 12:00</div>
-               <input type="checkbox" aria-label="Checkbox for following text input" class="ml-3">
+               <input type="checkbox" aria-label="Checkbox for following text input" class="ml-3" v-model="timeArrived1" @click="timeArr1()">
+               <div class="col-md-9 mb-2">06:00 - 12:00</div>
+               <input type="checkbox" aria-label="Checkbox for following text input" class="ml-3" v-model="timeArrived2" @click="timeArr2()">
                <div class="col-md-9 mb-2">12:00 - 18:00</div>
-               <input type="checkbox" aria-label="Checkbox for following text input" class="ml-3">
+               <input type="checkbox" aria-label="Checkbox for following text input" class="ml-3" v-model="timeArrived3" @click="timeArr3('')">
                <div class="col-md-9 mb-2">18:00 - 24:00</div>
-               <input type="checkbox" aria-label="Checkbox for following text input" class="ml-3">
+               <input type="checkbox" aria-label="Checkbox for following text input" class="ml-3" v-model="timeArrived4" @click="timeArr4('')">
              </div>
              <hr style="margin: auto 20px;">
              <div class="row tiket-price mt-4 ml-2">
@@ -150,11 +150,11 @@
             </div>
           </div>
         </div>
-        <div class="col-lg mt-4">
+        <div class="col-lg mt-4" v-if="allfindtiket.findtiket.data.length > 0">
               <div class="box-ticket mb-3" v-for="(datafindtiket, index) in allfindtiket.findtiket.data" :key="index">
-                    <div class="row airlines">
+                    <div class="row airlines" >
                       <div class="col-lg-2">
-                        <img :src="`http://localhost:3000/img/${datafindtiket.image_airlines}`" alt="">
+                        <img :src="`${url}/img/${datafindtiket.image_airlines}`" alt="">
                       </div>
                       <div class="col-lg-8">{{datafindtiket.name_airlines}}</div>
                     </div>
@@ -165,21 +165,21 @@
                         <div class="col-lg JPN">{{datafindtiket.code_destination}}</div>
                         <p style="font-size:10px" class="text-muted time2">12:33</p>
                         <div class="col-lg-2 text-time" style="width:40px">3 hours 11 minutes <br> <span style="padding-left:20px">1 {{datafindtiket.name_transit}}</span></div>
-                        <div class="col-lg text-center d-d-inline">
+                        <div class="col-lg text-center">
                           <span v-if="datafindtiket.name_facilities==='Luggage'">
-                          <img src="../assets/assets/img/bag.png" alt="bag" class="mr-2" width="15px">
+                          <img src="../assets/assets/img/bag.png" alt="bag" width="15px">
                           </span>
-                            <span :else-if="datafindtiket.name_facilities==='Wi-fi'">
-                          <img src="../assets/assets/img/wifi.png" alt="meal" class="mr-2" width="15px">
+                          <span v-if="datafindtiket.name_facilities==='Wi-fi'">
+                          <img src="../assets/assets/img/wifi.png" alt="wi-fi" width="15px">
                           </span>
-                            <span :else-if="datafindtiket.name_facilities==='In-Flight Meal'">
-                          <img src="../assets/assets/img/meal.png" alt="meal" class="mr-2" width="15px">
+                          <span v-if="datafindtiket.name_facilities==='In-Flight Meal'">
+                          <img src="../assets/assets/img/meal.png" alt="meal" width="15px">
                           </span>
                         </div>
                         <div class="col-lg price text-center">$ {{datafindtiket.price}}<span>/pax</span></div>
                         <div class="col-lg ">
                           <div class="select">
-                            <router-link :to="`/flightdetail/${datafindtiket.id_airlines}`" class="selects" style="box-shadow: 0px 8px 10px rgba(35, 149, 255, 0.3);height:40px;width:100px">Select</router-link>
+                            <router-link :to="`/flightdetail/${datafindtiket.id_airlines}`" class="nav-link" style="box-shadow: 0px 8px 10px rgba(35, 149, 255, 0.3);height:40px;width:100px">Select</router-link>
                           </div>
                         </div>
                       </div>
@@ -189,7 +189,40 @@
                         </div>
                     </div>
                     </div>
+                    <div v-else >
+                      <img src="../assets/assets/img/error-404.jpg" width="100%" class="ml-4 mt-4">
+                    </div>
                   </div>
+          <div class="box-ticket2">
+             <div class="card1 mt-5">
+                <div class="found-mobile ">{{allfindtiket.findtiket.data.length}} flight found</div>
+                <div class="filter-mobile ">FIlter
+                  <b-icon-arrow-down-up></b-icon-arrow-down-up>
+                </div>
+              </div>
+              <div class="card2" v-for="(datafindtiket, index) in allfindtiket.findtiket.data" :key="index">
+                  <router-link class="row card-airlines" style="cursor:pointer"  :to="`/flightdetail/${datafindtiket.id_airlines}`">
+                        <div class="col-4">
+                           <img :src="`${url}/img/${datafindtiket.image_airlines}`" alt="">
+                        </div>
+                      <div class="col-8">
+                        <div class="row country-mobile">
+                          <img src="../assets/assets/img/Vector (3).png" class="vektor">
+                          <div class="col-8">{{datafindtiket.code_departure}}</div>
+                          <div class="col-4">{{datafindtiket.code_destination}}</div>
+                        </div>
+                        <div class="row time-mobile">
+                          <div class="col-8">12:33</div>
+                          <div class="col-4">18:33</div>
+                        </div>
+                        <div class="row mt-3 long-time">
+                          <div class="col-7">3 hours 11 minutes</div>
+                          <div class="col-5">$ {{datafindtiket.price}}</div>
+                        </div>
+                      </div>
+               </router-link>
+              </div>
+             </div>
     <Footer/>
   </div>
 </template>
@@ -197,49 +230,422 @@
 <script>
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions, mapState } from 'vuex'
 export default {
   name: 'Find_Tiket',
   components: {
     Navbar,
     Footer
   },
+  data () {
+    return {
+      url: process.env.VUE_APP_API_URL,
+      search_flight: JSON.parse(localStorage.getItem('SearchAirlines')),
+      transit: '',
+      facilities: '',
+      departure_time: ['', ''],
+      timeArrived: ['', ''],
+      findTiket: [],
+      checked: [],
+      checked1: [],
+      checked2: [],
+      facilities1: [],
+      facilities2: [],
+      facilities3: [],
+      timeDepar1: [],
+      timeDepar2: [],
+      timeDepar3: [],
+      timeDepar4: [],
+      timeArrived1: [],
+      timeArrived2: [],
+      timeArrived3: [],
+      timeArrived4: []
+    }
+  },
   computed: {
+    ...mapState({
+      id: 'id'
+    }),
     ...mapGetters({
-      allfindtiket: 'findtiket/getAllTiket'
+      allfindtiket: 'findtiket/getSearchTiket',
+      getDetailUsers: 'users/getDetailUsers'
     })
   },
   methods: {
     ...mapActions({
-      actionsFindTiket: 'findtiket/getAllTicket',
-      actionsGetDetailTiket: 'findtiket/getDetailTicket',
-      actionsFilterTiketTransit: 'findtiket/filterTiketTransit',
-      actionsFilterTiketFacilities: 'findtiket/filterTiketFacilities'
+      actionSearchTiket: 'findtiket/SearchTiket',
+      actionS: 'findtiket/Search',
+      getId: 'users/getDetailUsers'
     }),
-    direct (value) {
-      this.actionsFilterTiketTransit(value)
+    direct () {
+      if (this.checked.length < 1) {
+        this.transit = 'direct'
+        const flight = [this.search_flight]
+        flight[0].transit = this.transit
+        flight[0].facilities = this.facilities
+        flight[0].deparFrom = ''
+        flight[0].deparTo = ''
+        flight[0].arrFrom = ''
+        flight[0].arrTo = ''
+        const result = [...flight, flight[0]][0]
+        this.actionS(result)
+      } else {
+        this.transit = ''
+        const flight = [this.search_flight]
+        flight[0].transit = this.transit
+        flight[0].facilities = this.facilities
+        flight[0].deparFrom = ''
+        flight[0].deparTo = ''
+        flight[0].arrFrom = ''
+        flight[0].arrTo = ''
+        const result = [...flight, flight[0]][0]
+        this.actionS(result)
+      }
     },
-    transit (value) {
-      this.actionsFilterTiketTransit(value)
+    transitMethod () {
+      if (this.checked1.length === 0) {
+        this.transit = 'transit'
+        const flight = [this.search_flight]
+        flight[0].transit = this.transit
+        flight[0].facilities = this.facilities
+        flight[0].deparFrom = ''
+        flight[0].deparTo = ''
+        flight[0].arrFrom = ''
+        flight[0].arrTo = ''
+        const result = [...flight, flight[0]][0]
+        this.actionS(result)
+      } else {
+        this.transit = ''
+        const flight = [this.search_flight]
+        flight[0].transit = this.transit
+        flight[0].facilities = this.facilities
+        flight[0].deparFrom = ''
+        flight[0].deparTo = ''
+        flight[0].arrFrom = ''
+        flight[0].arrTo = ''
+        const result = [...flight, flight[0]][0]
+        this.actionS(result)
+      }
     },
-    transit2 (value) {
-      this.actionsFilterTiketTransit(value)
+    transit2 () {
+      if (this.checked2.length === 0) {
+        this.transit = 'transit'
+        const flight = [this.search_flight]
+        flight[0].transit = this.transit
+        flight[0].facilities = this.facilities
+        flight[0].deparFrom = ''
+        flight[0].deparTo = ''
+        flight[0].arrFrom = ''
+        flight[0].arrTo = ''
+        const result = [...flight, flight[0]][0]
+        this.actionS(result)
+      } else {
+        this.transit = ''
+        const flight = [this.search_flight]
+        flight[0].transit = this.transit
+        flight[0].facilities = this.facilities
+        flight[0].deparFrom = ''
+        flight[0].deparTo = ''
+        flight[0].arrFrom = ''
+        flight[0].arrTo = ''
+        const result = [...flight, flight[0]][0]
+        this.actionS(result)
+      }
     },
-    luggage (value) {
-      this.actionsFilterTiketFacilities(value)
+    luggage () {
+      if (this.facilities1.length === 0) {
+        this.facilities = 'luggage'
+        const flight = [this.search_flight]
+        flight[0].transit = this.transit
+        flight[0].facilities = this.facilities
+        flight[0].deparFrom = ''
+        flight[0].deparTo = ''
+        flight[0].arrFrom = ''
+        flight[0].arrTo = ''
+        const result = [...flight, flight[0]][0]
+        this.actionS(result)
+      } else {
+        this.facilities = ''
+        const flight = [this.search_flight]
+        flight[0].transit = this.transit
+        flight[0].facilities = this.facilities
+        flight[0].deparFrom = ''
+        flight[0].deparTo = ''
+        flight[0].arrFrom = ''
+        flight[0].arrTo = ''
+        const result = [...flight, flight[0]][0]
+        this.actionS(result)
+      }
     },
-    meal (value) {
-      this.actionsFilterTiketFacilities(value)
+    meal () {
+      if (this.facilities2.length === 0) {
+        this.facilities = 'meal'
+        const flight = [this.search_flight]
+        flight[0].transit = this.transit
+        flight[0].facilities = this.facilities
+        flight[0].deparFrom = ''
+        flight[0].deparTo = ''
+        flight[0].arrFrom = ''
+        flight[0].arrTo = ''
+        const result = [...flight, flight[0]][0]
+
+        this.actionS(result)
+      } else {
+        this.facilities = ''
+        const flight = [this.search_flight]
+        flight[0].transit = this.transit
+        flight[0].facilities = this.facilities
+        flight[0].deparFrom = ''
+        flight[0].deparTo = ''
+        flight[0].arrFrom = ''
+        flight[0].arrTo = ''
+        const result = [...flight, flight[0]][0]
+        this.actionS(result)
+      }
     },
-    wifi (value) {
-      this.actionsFilterTiketFacilities(value)
+    wifi () {
+      if (this.facilities3.length === 0) {
+        this.facilities = 'wi-fi'
+        const flight = [this.search_flight]
+        flight[0].transit = this.transit
+        flight[0].facilities = this.facilities
+        flight[0].deparFrom = ''
+        flight[0].deparTo = ''
+        flight[0].arrFrom = ''
+        flight[0].arrTo = ''
+        const result = [...flight, flight[0]][0]
+
+        this.actionS(result)
+      } else {
+        this.facilities = ''
+        const flight = [this.search_flight]
+        flight[0].transit = this.transit
+        flight[0].facilities = this.facilities
+        flight[0].deparFrom = ''
+        flight[0].deparTo = ''
+        flight[0].arrFrom = ''
+        flight[0].arrTo = ''
+        const result = [...flight, flight[0]][0]
+
+        this.actionS(result)
+      }
+    },
+    depar1 () {
+      if (this.timeDepar1.length === 0) {
+        this.departure_time = ['00:00:00', '06:00:00']
+        const flight = [this.search_flight]
+        flight[0].transit = this.transit
+        flight[0].facilities = this.facilities
+        flight[0].deparFrom = this.departure_time[0]
+        flight[0].deparTo = this.departure_time[1]
+        flight[0].arrFrom = this.timeArrived[0]
+        flight[0].arrTo = this.timeArrived[1]
+        const result = [...flight, flight[0]][0]
+        this.actionS(result)
+      } else {
+        this.departure_time = ['', '']
+        const flight = [this.search_flight]
+        flight[0].transit = this.transit
+        flight[0].facilities = this.facilities
+        flight[0].deparFrom = this.departure_time[0]
+        flight[0].deparTo = this.departure_time[1]
+        flight[0].arrFrom = this.timeArrived[0]
+        flight[0].arrTo = this.timeArrived[1]
+        const result = [...flight, flight[0]][0]
+
+        this.actionS(result)
+      }
+    },
+    depar2 () {
+      if (this.timeDepar2.length === 0) {
+        this.departure_time = ['06:00:00', '12:00:00']
+        const flight = [this.search_flight]
+        flight[0].transit = this.transit
+        flight[0].facilities = this.facilities
+        flight[0].deparFrom = this.departure_time[0]
+        flight[0].deparTo = this.departure_time[1]
+        flight[0].arrFrom = this.timeArrived[0]
+        flight[0].arrTo = this.timeArrived[1]
+        const result = [...flight, flight[0]][0]
+        this.actionS(result)
+      } else {
+        this.departure_time = ['', '']
+        const flight = [this.search_flight]
+        flight[0].transit = this.transit
+        flight[0].facilities = this.facilities
+        flight[0].deparFrom = this.departure_time[0]
+        flight[0].deparTo = this.departure_time[1]
+        flight[0].arrFrom = this.timeArrived[0]
+        flight[0].arrTo = this.timeArrived[1]
+        const result = [...flight, flight[0]][0]
+
+        this.actionS(result)
+      }
+    },
+    depar3 () {
+      if (this.timeDepar3.length === 0) {
+        this.departure_time = ['12:00:00', '18:00:00']
+        const flight = [this.search_flight]
+        flight[0].transit = this.transit
+        flight[0].facilities = this.facilities
+        flight[0].deparFrom = this.departure_time[0]
+        flight[0].deparTo = this.departure_time[1]
+        flight[0].arrFrom = this.timeArrived[0]
+        flight[0].arrTo = this.timeArrived[1]
+        const result = [...flight, flight[0]][0]
+
+        this.actionS(result)
+      } else {
+        this.departure_time = ['', '']
+        const flight = [this.search_flight]
+        flight[0].transit = this.transit
+        flight[0].facilities = this.facilities
+        flight[0].deparFrom = this.departure_time[0]
+        flight[0].deparTo = this.departure_time[1]
+        flight[0].arrFrom = this.timeArrived[0]
+        flight[0].arrTo = this.timeArrived[1]
+        const result = [...flight, flight[0]][0]
+
+        this.actionS(result)
+      }
+    },
+    depar4 () {
+      if (this.timeDepar2.length === 0) {
+        this.departure_time = ['18:00:00', '24:00:00']
+        const flight = [this.search_flight]
+        flight[0].transit = this.transit
+        flight[0].facilities = this.facilities
+        flight[0].deparFrom = this.departure_time[0]
+        flight[0].deparTo = this.departure_time[1]
+        flight[0].arrFrom = this.timeArrived[0]
+        flight[0].arrTo = this.timeArrived[1]
+        const result = [...flight, flight[0]][0]
+        this.actionS(result)
+      } else {
+        this.departure_time = ['', '']
+        const flight = [this.search_flight]
+        flight[0].transit = this.transit
+        flight[0].facilities = this.facilities
+        flight[0].deparFrom = this.departure_time[0]
+        flight[0].deparTo = this.departure_time[1]
+        flight[0].arrFrom = this.timeArrived[0]
+        flight[0].arrTo = this.timeArrived[1]
+        const result = [...flight, flight[0]][0]
+
+        this.actionS(result)
+      }
+    },
+    timeArr1 () {
+      if (this.timeArrived1.length === 0) {
+        this.timeArrived = ['00:00:00', '06:00:00']
+        const flight = [this.search_flight]
+        flight[0].transit = this.transit
+        flight[0].facilities = this.facilities
+        flight[0].deparFrom = this.departure_time[0]
+        flight[0].deparTo = this.departure_time[1]
+        flight[0].arrFrom = this.timeArrived[0]
+        flight[0].arrTo = this.timeArrived[1]
+        const result = [...flight, flight[0]][0]
+        this.actionS(result)
+      } else {
+        const flight = [this.search_flight]
+        this.timeArrived = ['', '']
+        flight[0].transit = this.transit
+        flight[0].facilities = this.facilities
+        flight[0].deparFrom = this.departure_time[0]
+        flight[0].deparTo = this.departure_time[1]
+        flight[0].arrFrom = this.timeArrived[0]
+        flight[0].arrTo = this.timeArrived[1]
+        const result = [...flight, flight[0]][0]
+        this.actionS(result)
+      }
+    },
+    timeArr2 () {
+      if (this.timeArrived2.length === 0) {
+        this.timeArrived = ['06:00:00', '12:00:00']
+        const flight = [this.search_flight]
+        flight[0].transit = this.transit
+        flight[0].facilities = this.facilities
+        flight[0].deparFrom = this.departure_time[0]
+        flight[0].deparTo = this.departure_time[1]
+        flight[0].arrFrom = this.timeArrived[0]
+        flight[0].arrTo = this.timeArrived[1]
+        const result = [...flight, flight[0]][0]
+        this.actionS(result)
+      } else {
+        this.timeArrived = ['', '']
+        const flight = [this.search_flight]
+        flight[0].transit = this.transit
+        flight[0].facilities = this.facilities
+        flight[0].deparFrom = this.departure_time[0]
+        flight[0].deparTo = this.departure_time[1]
+        flight[0].arrFrom = this.timeArrived[0]
+        flight[0].arrTo = this.timeArrived[1]
+        const result = [...flight, flight[0]][0]
+        this.actionS(result)
+      }
+    },
+    timeArr3 () {
+      if (this.timeArrived3.length === 0) {
+        this.timeArrived = ['12:00:00', '18:00:00']
+        const flight = [this.search_flight]
+        flight[0].transit = this.transit
+        flight[0].facilities = this.facilities
+        flight[0].deparFrom = this.departure_time[0]
+        flight[0].deparTo = this.departure_time[1]
+        flight[0].arrFrom = this.timeArrived[0]
+        flight[0].arrTo = this.timeArrived[1]
+        const result = [...flight, flight[0]][0]
+
+        this.actionS(result)
+      } else {
+        this.timeArrived = ['', '']
+        const flight = [this.search_flight]
+        flight[0].transit = this.transit
+        flight[0].facilities = this.facilities
+        flight[0].deparFrom = this.departure_time[0]
+        flight[0].deparTo = this.departure_time[1]
+        flight[0].arrFrom = this.timeArrived[0]
+        flight[0].arrTo = this.timeArrived[1]
+        const result = [...flight, flight[0]][0]
+
+        this.actionS(result)
+      }
+    },
+    timeArr4 () {
+      if (this.timeArrived4.length === 0) {
+        this.timeArrived = ['18:00:00', '24:00:00']
+        const flight = [this.search_flight]
+        flight[0].transit = this.transit
+        flight[0].facilities = this.facilities
+        flight[0].deparFrom = this.departure_time[0]
+        flight[0].deparTo = this.departure_time[1]
+        flight[0].arrFrom = this.timeArrived[0]
+        flight[0].arrTo = this.timeArrived[1]
+        const result = [...flight, flight[0]][0]
+
+        this.actionS(result)
+      } else {
+        this.timeArrived = ['', '']
+        const flight = [this.search_flight]
+        flight[0].transit = this.transit
+        flight[0].facilities = this.facilities
+        flight[0].deparFrom = this.departure_time[0]
+        flight[0].deparTo = this.departure_time[1]
+        flight[0].arrFrom = this.timeArrived[0]
+        flight[0].arrTo = this.timeArrived[1]
+        const result = [...flight, flight[0]][0]
+
+        this.actionS(result)
+      }
     }
-    // selectTiket (idAirlines) {
-    //   this.actionsGetDetailTiket(idAirlines)
-    // }
   },
   mounted () {
-    this.actionsFindTiket()
+    this.actionSearchTiket(this.search_flight)
+      .then((result) => {
+        this.findTiket = result
+      })
+    this.getId(this.id)
   }
 }
 </script>
@@ -361,7 +767,7 @@ export default {
 .airlines img {
   margin-left: 20px;
 }
-.select .selects {
+.select .nav-link {
   background: #2395FF;
 box-shadow: 0px 8px 10px rgba(35, 149, 255, 0.3);
 border-radius: 10px;
@@ -370,8 +776,8 @@ color: white;
 height: 40px;
 cursor: pointer;
 }
-.select .selects{
-  line-height: 40px;
+.select .nav-link{
+  line-height: 25px;
   text-align: center;
   font-size: 14px;
 }

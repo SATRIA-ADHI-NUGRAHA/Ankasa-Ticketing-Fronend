@@ -23,7 +23,7 @@
               v-slot="{ errors }"
             >
             <input v-model="form.email" type="text" id="suffixInside" class="form-control">
-            <label for="suffixInside">Username </label>
+            <label for="suffixInside">Email </label>
             <div class="text-danger">
               {{errors[0]}}
             </div>
@@ -53,7 +53,7 @@
           <p></p>
           <p>Did you forget your password ?</p>
           <p></p>
-          <router-link to="/"><p>Tap here for reset</p></router-link>
+          <router-link to="/forgotpassword"><p>Tap here for reset</p></router-link>
         </div>
         <div>
           <img class="divider ml-5" src="../assets/assets/img/divider.png" alt="">
@@ -61,8 +61,9 @@
         <div class="signIn">
           <h6>or sign in with</h6>
           <b-button class="m-3" variant="outline-primary"><img src="../assets/assets/img/google.png" alt=""></b-button>
-          <b-button class="m-3" variant="outline-primary"><img src="../assets/assets/img/fb.png" alt=""></b-button>
+          <b-button class="m-3" variant="outline-primary"><img src="../assets/assets/img/facebook.png" alt=""></b-button>
         </div>
+        <router-link to="/register"><p>Don't have an account yet? <br>Sign Up</p></router-link>
       </div>
     </div>
   </div>
@@ -70,7 +71,6 @@
 
 <script>
 import { mapActions } from 'vuex'
-import Swal from 'sweetalert2'
 export default {
   data () {
     return {
@@ -86,14 +86,7 @@ export default {
     }),
     login () {
       this.onlogin(this.form).then(res => {
-        setTimeout(() => {
-          window.location = '/'
-        }, 2000)
-        Swal.fire(
-          'Good job!',
-          `${res}`,
-          'success'
-        )
+        window.location = '/user'
       }).catch(err => {
         alert(err)
       })

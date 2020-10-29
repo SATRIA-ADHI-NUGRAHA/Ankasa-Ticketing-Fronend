@@ -24,6 +24,7 @@
           <p></p>
           <p>You’ll get message soon on your email</p>
         </div>
+        <router-link to="/login"><p>Login</p></router-link>
       </div>
     </div>
   </div>

@@ -19,7 +19,7 @@
         <a class="nav-link " href="javascript:viod()" data-toggle="modal" data-target="#exampleModal"> Find tiket <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item link ml-2">
-        <a class="nav-link" href="#">MY booking</a>
+        <router-link class="nav-link" to="/mybooking">MY booking</router-link>
       </li>
     </ul>
     <a  href="/login" class="btn btn-primary btn-as mr-5 ">sign</a>
@@ -27,7 +27,7 @@
 </nav>
 </div>
 <div v-else >
-    <Navbar />
+    <Navbar :img="getDetailUsers.users.data" />
 </div>
 <!-- end navbar -->
 <!-- main -->
@@ -35,7 +35,7 @@
   <div class="row">
     <div class="col-md-6">
       <div class="container">
-        <h1>find your <span class="text-primary">flight</span></h1>
+        <h1>find your<span class="text-primary"> flight</span></h1>
         <span>and explore the world with us</span>
       </div>
      <div  class="image-down mt-5">
@@ -125,7 +125,7 @@
     </div>
     </div>
   </div>
-  <Modal />
+  <Modal type="home"  />
 </div>
   <!-- <Footer /> -->
 <!-- end of main -->
@@ -133,7 +133,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 import Modal from '../components/Modal'
 import Navbar from '../components/Navbar'
 // import Footer from '../components/Footer'
@@ -145,8 +145,20 @@ export default {
   },
   computed: {
     ...mapState({
-      token: 'token'
+      token: 'token',
+      id: 'id'
+    }),
+    ...mapGetters({
+      getDetailUsers: 'users/getDetailUsers'
     })
+  },
+  methods: {
+    ...mapActions({
+      getId: 'users/getDetailUsers'
+    })
+  },
+  mounted () {
+    this.getId(this.id)
   }
 }
 </script>

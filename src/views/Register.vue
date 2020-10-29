@@ -66,12 +66,11 @@ export default {
   methods: {
     onRegister () {
       this.actionRegister(this.form).then((response) => {
-        console.log(response)
         alert(response)
         window.location = '/login'
       }).catch((err) => {
         if (err.code === 500) {
-          console.log(err.message)
+          alert(err.message)
         } else {
           alert('Email already exist ...!')
         }

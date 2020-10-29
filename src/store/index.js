@@ -3,14 +3,16 @@ import Vuex from 'vuex'
 import findtiket from './findtiket/'
 import users from './users/'
 import axios from 'axios'
+import auth from './auth/index'
+import booking from './booking/index'
 import swal from 'sweetalert2'
-import auth from './auth'
-
+import { url } from '../helper/env'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    token: localStorage.getItem('token')
+    token: localStorage.getItem('token'),
+    id: localStorage.getItem('id')
   },
   getters: {
     islogin (state) {
@@ -26,16 +28,20 @@ export default new Vuex.Store({
     login ({ commit }, result) {
       return new Promise((resolve, reject) => {
         axios
-          .post('http://localhost:3000/api/users/login', result)
+          .post(`${url}/api/users/login`, result)
           .then(dt => {
-            console.log(
-              dt.data.status === 'not activated' && !dt.data.tokenLogin
-            )
             if (dt.data.status === 'not activated') {
               swal.fire({
                 icon: 'error',
                 title: 'Oops...',
                 text: 'akun belum teraktifasi, silakan cek gmail',
+                footer: '<a href>Why do I have this issue?</a>'
+              })
+            } else if (dt.data.status === 'Email has not been registered') {
+              swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Email has not been registered!',
                 footer: '<a href>Why do I have this issue?</a>'
               })
             } else if (!dt.data.tokenLogin) {
@@ -49,6 +55,7 @@ export default new Vuex.Store({
               console.log(dt)
               resolve(dt.data.message)
               localStorage.setItem('token', dt.data.tokenLogin)
+              localStorage.setItem('id', dt.data.id)
             }
           })
           .catch(err => {
@@ -60,6 +67,7 @@ export default new Vuex.Store({
   modules: {
     findtiket,
     users,
-    auth
+    auth,
+    booking
   }
 })
